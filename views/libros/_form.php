@@ -4,19 +4,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\Usuarios $model */
+/** @var app\models\Libros $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="usuarios-form">
+<div class="libros-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'autor')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tipo_usuario')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'genero')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'anio')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

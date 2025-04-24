@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Usuarios;
-use app\models\UsuariosSearch;
+use app\models\LibrosCategorias;
+use app\models\LibrosCategoriasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UsuariosController implements the CRUD actions for Usuarios model.
+ * LibrosCategoriasController implements the CRUD actions for LibrosCategorias model.
  */
-class UsuariosController extends Controller
+class LibrosCategoriasController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,13 +32,13 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Lists all Usuarios models.
+     * Lists all LibrosCategorias models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new UsuariosSearch();
+        $searchModel = new LibrosCategoriasSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,30 +48,30 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Displays a single Usuarios model.
-     * @param int $idusuarios Idusuarios
+     * Displays a single LibrosCategorias model.
+     * @param int $idlibros_categorias Idlibros Categorias
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idusuarios)
+    public function actionView($idlibros_categorias)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idusuarios),
+            'model' => $this->findModel($idlibros_categorias),
         ]);
     }
 
     /**
-     * Creates a new Usuarios model.
+     * Creates a new LibrosCategorias model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Usuarios();
+        $model = new LibrosCategorias();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+                return $this->redirect(['view', 'idlibros_categorias' => $model->idlibros_categorias]);
             }
         } else {
             $model->loadDefaultValues();
@@ -83,18 +83,18 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Updates an existing Usuarios model.
+     * Updates an existing LibrosCategorias model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idusuarios Idusuarios
+     * @param int $idlibros_categorias Idlibros Categorias
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idusuarios)
+    public function actionUpdate($idlibros_categorias)
     {
-        $model = $this->findModel($idusuarios);
+        $model = $this->findModel($idlibros_categorias);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+            return $this->redirect(['view', 'idlibros_categorias' => $model->idlibros_categorias]);
         }
 
         return $this->render('update', [
@@ -103,29 +103,29 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Deletes an existing Usuarios model.
+     * Deletes an existing LibrosCategorias model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idusuarios Idusuarios
+     * @param int $idlibros_categorias Idlibros Categorias
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idusuarios)
+    public function actionDelete($idlibros_categorias)
     {
-        $this->findModel($idusuarios)->delete();
+        $this->findModel($idlibros_categorias)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Usuarios model based on its primary key value.
+     * Finds the LibrosCategorias model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idusuarios Idusuarios
-     * @return Usuarios the loaded model
+     * @param int $idlibros_categorias Idlibros Categorias
+     * @return LibrosCategorias the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idusuarios)
+    protected function findModel($idlibros_categorias)
     {
-        if (($model = Usuarios::findOne(['idusuarios' => $idusuarios])) !== null) {
+        if (($model = LibrosCategorias::findOne(['idlibros_categorias' => $idlibros_categorias])) !== null) {
             return $model;
         }
 

@@ -1,24 +1,24 @@
 <?php
 
-use app\models\Usuarios;
+use app\models\LibrosCategorias;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\models\UsuariosSearch $searchModel */
+/** @var app\models\LibrosCategoriasSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Usuarios');
+$this->title = Yii::t('app', 'Libros Categorias');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="usuarios-index">
+<div class="libros-categorias-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Usuarios'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Libros Categorias'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,14 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idusuarios',
-            'nombre',
-            'email:email',
-            'tipo_usuario',
+            'idlibros_categorias',
+            'libro_id',
+            'categoria_id',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Usuarios $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'idusuarios' => $model->idusuarios]);
+                'urlCreator' => function ($action, LibrosCategorias $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'idlibros_categorias' => $model->idlibros_categorias]);
                  }
             ],
         ],

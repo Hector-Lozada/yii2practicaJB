@@ -1,24 +1,24 @@
 <?php
 
-use app\models\Usuarios;
+use app\models\Prestamos;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\models\UsuariosSearch $searchModel */
+/** @var app\models\PrestamosSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Usuarios');
+$this->title = Yii::t('app', 'Prestamos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="usuarios-index">
+<div class="prestamos-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Usuarios'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Prestamos'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,14 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idusuarios',
-            'nombre',
-            'email:email',
-            'tipo_usuario',
+            'idprestamos',
+            'usuario_id',
+            'libro_id',
+            'fecha_prestamo',
+            'fecha_devolucion',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Usuarios $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'idusuarios' => $model->idusuarios]);
+                'urlCreator' => function ($action, Prestamos $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'idprestamos' => $model->idprestamos]);
                  }
             ],
         ],

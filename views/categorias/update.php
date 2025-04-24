@@ -6,10 +6,10 @@ use yii\helpers\Html;
 /** @var app\models\Categorias $model */
 
 $this->title = Yii::t('app', 'Update Categorias: {name}', [
-    'name' => $model->id,
+    'name' => $model->idcategorias,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Categorias'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->idcategorias, 'url' => ['view', 'idcategorias' => $model->idcategorias]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="categorias-update">

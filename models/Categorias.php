@@ -7,10 +7,10 @@ use Yii;
 /**
  * This is the model class for table "categorias".
  *
- * @property int $id
+ * @property int $idcategorias
  * @property string|null $nombre
  *
- * @property Productos[] $productos
+ * @property LibrosCategorias[] $librosCategorias
  */
 class Categorias extends \yii\db\ActiveRecord
 {
@@ -41,19 +41,19 @@ class Categorias extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'idcategorias' => Yii::t('app', 'Idcategorias'),
             'nombre' => Yii::t('app', 'Nombre'),
         ];
     }
 
     /**
-     * Gets query for [[Productos]].
+     * Gets query for [[LibrosCategorias]].
      *
-     * @return \yii\db\ActiveQuery|ProductosQuery
+     * @return \yii\db\ActiveQuery|LibrosCategoriasQuery
      */
-    public function getProductos()
+    public function getLibrosCategorias()
     {
-        return $this->hasMany(Productos::class, ['categoria_id' => 'id']);
+        return $this->hasMany(LibrosCategorias::class, ['categoria_id' => 'idcategorias']);
     }
 
     /**

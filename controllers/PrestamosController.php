@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Usuarios;
-use app\models\UsuariosSearch;
+use app\models\Prestamos;
+use app\models\PrestamosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UsuariosController implements the CRUD actions for Usuarios model.
+ * PrestamosController implements the CRUD actions for Prestamos model.
  */
-class UsuariosController extends Controller
+class PrestamosController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,13 +32,13 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Lists all Usuarios models.
+     * Lists all Prestamos models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new UsuariosSearch();
+        $searchModel = new PrestamosSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,30 +48,30 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Displays a single Usuarios model.
-     * @param int $idusuarios Idusuarios
+     * Displays a single Prestamos model.
+     * @param int $idprestamos Idprestamos
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idusuarios)
+    public function actionView($idprestamos)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idusuarios),
+            'model' => $this->findModel($idprestamos),
         ]);
     }
 
     /**
-     * Creates a new Usuarios model.
+     * Creates a new Prestamos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Usuarios();
+        $model = new Prestamos();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+                return $this->redirect(['view', 'idprestamos' => $model->idprestamos]);
             }
         } else {
             $model->loadDefaultValues();
@@ -83,18 +83,18 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Updates an existing Usuarios model.
+     * Updates an existing Prestamos model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idusuarios Idusuarios
+     * @param int $idprestamos Idprestamos
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idusuarios)
+    public function actionUpdate($idprestamos)
     {
-        $model = $this->findModel($idusuarios);
+        $model = $this->findModel($idprestamos);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+            return $this->redirect(['view', 'idprestamos' => $model->idprestamos]);
         }
 
         return $this->render('update', [
@@ -103,29 +103,29 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Deletes an existing Usuarios model.
+     * Deletes an existing Prestamos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idusuarios Idusuarios
+     * @param int $idprestamos Idprestamos
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idusuarios)
+    public function actionDelete($idprestamos)
     {
-        $this->findModel($idusuarios)->delete();
+        $this->findModel($idprestamos)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Usuarios model based on its primary key value.
+     * Finds the Prestamos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idusuarios Idusuarios
-     * @return Usuarios the loaded model
+     * @param int $idprestamos Idprestamos
+     * @return Prestamos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idusuarios)
+    protected function findModel($idprestamos)
     {
-        if (($model = Usuarios::findOne(['idusuarios' => $idusuarios])) !== null) {
+        if (($model = Prestamos::findOne(['idprestamos' => $idprestamos])) !== null) {
             return $model;
         }
 

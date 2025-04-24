@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Categorias;
+use app\models\LibrosCategorias;
 
 /**
- * CategoriasSearch represents the model behind the search form of `app\models\Categorias`.
+ * LibrosCategoriasSearch represents the model behind the search form of `app\models\LibrosCategorias`.
  */
-class CategoriasSearch extends Categorias
+class LibrosCategoriasSearch extends LibrosCategorias
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,7 @@ class CategoriasSearch extends Categorias
     public function rules()
     {
         return [
-            [['idcategorias'], 'integer'],
-            [['nombre'], 'safe'],
+            [['idlibros_categorias', 'libro_id', 'categoria_id'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class CategoriasSearch extends Categorias
      */
     public function search($params, $formName = null)
     {
-        $query = Categorias::find();
+        $query = LibrosCategorias::find();
 
         // add conditions that should always apply here
 
@@ -59,10 +58,10 @@ class CategoriasSearch extends Categorias
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idcategorias' => $this->idcategorias,
+            'idlibros_categorias' => $this->idlibros_categorias,
+            'libro_id' => $this->libro_id,
+            'categoria_id' => $this->categoria_id,
         ]);
-
-        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
 
         return $dataProvider;
     }

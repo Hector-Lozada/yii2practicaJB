@@ -7,16 +7,12 @@ use Yii;
 /**
  * This is the model class for table "usuarios".
  *
- * @property int $id
+ * @property int $idusuarios
  * @property string|null $nombre
  * @property string|null $email
- * @property string|null $contraseña
- * @property string|null $fecha_registro
+ * @property string|null $tipo_usuario
  *
- * @property Carrito[] $carritos
- * @property Direcciones[] $direcciones
- * @property Pedidos[] $pedidos
- * @property Resenas[] $resenas
+ * @property Prestamos[] $prestamos
  */
 class Usuarios extends \yii\db\ActiveRecord
 {
@@ -36,11 +32,9 @@ class Usuarios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'email', 'contraseña', 'fecha_registro'], 'default', 'value' => null],
-            [['fecha_registro'], 'safe'],
+            [['nombre', 'email', 'tipo_usuario'], 'default', 'value' => null],
             [['nombre', 'email'], 'string', 'max' => 100],
-            [['contraseña'], 'string', 'max' => 255],
-            [['email'], 'unique'],
+            [['tipo_usuario'], 'string', 'max' => 50],
         ];
     }
 
@@ -50,52 +44,21 @@ class Usuarios extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'idusuarios' => Yii::t('app', 'Idusuarios'),
             'nombre' => Yii::t('app', 'Nombre'),
             'email' => Yii::t('app', 'Email'),
-            'contraseña' => Yii::t('app', 'Contraseña'),
-            'fecha_registro' => Yii::t('app', 'Fecha Registro'),
+            'tipo_usuario' => Yii::t('app', 'Tipo Usuario'),
         ];
     }
 
     /**
-     * Gets query for [[Carritos]].
+     * Gets query for [[Prestamos]].
      *
-     * @return \yii\db\ActiveQuery|CarritoQuery
+     * @return \yii\db\ActiveQuery|PrestamosQuery
      */
-    public function getCarritos()
+    public function getPrestamos()
     {
-        return $this->hasMany(Carrito::class, ['usuario_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Direcciones]].
-     *
-     * @return \yii\db\ActiveQuery|DireccionesQuery
-     */
-    public function getDirecciones()
-    {
-        return $this->hasMany(Direcciones::class, ['usuario_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Pedidos]].
-     *
-     * @return \yii\db\ActiveQuery|PedidosQuery
-     */
-    public function getPedidos()
-    {
-        return $this->hasMany(Pedidos::class, ['usuario_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Resenas]].
-     *
-     * @return \yii\db\ActiveQuery|ResenasQuery
-     */
-    public function getResenas()
-    {
-        return $this->hasMany(Resenas::class, ['usuario_id' => 'id']);
+        return $this->hasMany(Prestamos::class, ['usuario_id' => 'idusuarios']);
     }
 
     /**
