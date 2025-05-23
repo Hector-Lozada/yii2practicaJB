@@ -2,39 +2,30 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
-/**
- * UsuariosController implements the CRUD actions for Usuarios model.
- */
 class UsuariosController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+        return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**
-     * Lists all Usuarios models.
-     *
-     * @return string
+     * Lista todos los usuarios.
      */
     public function actionIndex()
     {
@@ -48,87 +39,159 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Displays a single Usuarios model.
-     * @param int $idusuarios Idusuarios
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
+     * Muestra un solo usuario.
      */
-    public function actionView($idusuarios)
+    public function actionView($id_usuario)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idusuarios),
+            'model' => $this->findModel($id_usuario),
         ]);
     }
 
     /**
-     * Creates a new Usuarios model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * Crea un nuevo usuario.
      */
     public function actionCreate()
     {
         $model = new Usuarios();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+            $model->load($this->request->post());
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            // Validación temporal
+            $model->imagen_perfil = 'temp';
+            if (!$model->validate()) {
+                Yii::$app->session->setFlash('error', $this->getErrorSummary($model));
+                return $this->render('create', ['model' => $model]);
             }
-        } else {
-            $model->loadDefaultValues();
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // Procesar imagen
+                if ($model->imageFile) {
+                    $uploadDir = Yii::getAlias('@webroot/uploads/images/');
+                    if (!file_exists($uploadDir)) {
+                        mkdir($uploadDir, 0775, true);
+                    }
+
+                    $fileName = uniqid() . '.' . $model->imageFile->extension;
+                    $filePath = $uploadDir . $fileName;
+
+                    if ($model->imageFile->saveAs($filePath)) {
+                        $model->imagen_perfil = '/uploads/images/' . $fileName;
+                    } else {
+                        throw new \Exception('No se pudo guardar la imagen.');
+                    }
+                }
+
+                if ($model->save(false)) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Usuario creado exitosamente.');
+                    return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+                } else {
+                    throw new \Exception('Error al guardar: ' . print_r($model->errors, true));
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                if (isset($filePath) && file_exists($filePath)) {
+                    unlink($filePath);
+                }
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                Yii::error($e->getMessage());
+            }
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
-    /**
-     * Updates an existing Usuarios model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idusuarios Idusuarios
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($idusuarios)
+    public function actionUpdate($id_usuario)
     {
-        $model = $this->findModel($idusuarios);
+        $model = $this->findModel($id_usuario);
+        $oldImagePath = $model->imagen_perfil;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idusuarios' => $model->idusuarios]);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if (!$model->validate()) {
+                Yii::$app->session->setFlash('error', $this->getErrorSummary($model));
+                return $this->render('update', ['model' => $model]);
+            }
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // Procesar nueva imagen si se subió
+                if ($model->imageFile) {
+                    $uploadDir = Yii::getAlias('@webroot/uploads/images/');
+                    $fileName = uniqid() . '.' . $model->imageFile->extension;
+                    $filePath = $uploadDir . $fileName;
+
+                    if ($model->imageFile->saveAs($filePath)) {
+                        // Eliminar la imagen anterior
+                        if ($oldImagePath && file_exists(Yii::getAlias('@webroot' . $oldImagePath))) {
+                            unlink(Yii::getAlias('@webroot' . $oldImagePath));
+                        }
+                        $model->imagen_perfil = '/uploads/images/' . $fileName;
+                    } else {
+                        throw new \Exception('No se pudo guardar la nueva imagen.');
+                    }
+                }
+
+                if ($model->save(false)) {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Usuario actualizado exitosamente.');
+                    return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+                } else {
+                    throw new \Exception('Error al actualizar: ' . print_r($model->errors, true));
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                Yii::error($e->getMessage());
+            }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
-    /**
-     * Deletes an existing Usuarios model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idusuarios Idusuarios
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($idusuarios)
+    public function actionDelete($id_usuario)
     {
-        $this->findModel($idusuarios)->delete();
+        $model = $this->findModel($id_usuario);
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            if ($model->delete()) {
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', 'Empleado eliminado exitosamente.');
+            } else {
+                throw new \Exception('No se pudo eliminar el empleado.');
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            Yii::error($e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Usuarios model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idusuarios Idusuarios
-     * @return Usuarios the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($idusuarios)
+    protected function findModel($id_usuario)
     {
-        if (($model = Usuarios::findOne(['idusuarios' => $idusuarios])) !== null) {
+        if (($model = Usuarios::findOne($id_usuario)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException('El empleado solicitado no existe.');
+    }
+
+    private function getErrorSummary($model)
+    {
+        $errors = [];
+        foreach ($model->errors as $attribute => $errorMessages) {
+            $label = $model->getAttributeLabel($attribute);
+            $errors[] = "$label: " . implode(', ', $errorMessages);
+        }
+        return implode('<br>', $errors);
     }
 }

@@ -49,14 +49,14 @@ class CategoriasController extends Controller
 
     /**
      * Displays a single Categorias model.
-     * @param int $idcategorias Idcategorias
+     * @param int $id_categoria Id Categoria
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idcategorias)
+    public function actionView($id_categoria)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idcategorias),
+            'model' => $this->findModel($id_categoria),
         ]);
     }
 
@@ -71,7 +71,7 @@ class CategoriasController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idcategorias' => $model->idcategorias]);
+                return $this->redirect(['view', 'id_categoria' => $model->id_categoria]);
             }
         } else {
             $model->loadDefaultValues();
@@ -85,16 +85,16 @@ class CategoriasController extends Controller
     /**
      * Updates an existing Categorias model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idcategorias Idcategorias
+     * @param int $id_categoria Id Categoria
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idcategorias)
+    public function actionUpdate($id_categoria)
     {
-        $model = $this->findModel($idcategorias);
+        $model = $this->findModel($id_categoria);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idcategorias' => $model->idcategorias]);
+            return $this->redirect(['view', 'id_categoria' => $model->id_categoria]);
         }
 
         return $this->render('update', [
@@ -105,13 +105,13 @@ class CategoriasController extends Controller
     /**
      * Deletes an existing Categorias model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idcategorias Idcategorias
+     * @param int $id_categoria Id Categoria
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idcategorias)
+    public function actionDelete($id_categoria)
     {
-        $this->findModel($idcategorias)->delete();
+        $this->findModel($id_categoria)->delete();
 
         return $this->redirect(['index']);
     }
@@ -119,13 +119,13 @@ class CategoriasController extends Controller
     /**
      * Finds the Categorias model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idcategorias Idcategorias
+     * @param int $id_categoria Id Categoria
      * @return Categorias the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idcategorias)
+    protected function findModel($id_categoria)
     {
-        if (($model = Categorias::findOne(['idcategorias' => $idcategorias])) !== null) {
+        if (($model = Categorias::findOne(['id_categoria' => $id_categoria])) !== null) {
             return $model;
         }
 

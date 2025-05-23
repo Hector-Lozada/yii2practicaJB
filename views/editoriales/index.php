@@ -1,24 +1,24 @@
 <?php
 
-use app\models\Libros;
+use app\models\Editoriales;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\models\LibrosSearch $searchModel */
+/** @var app\models\EditorialesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Libros');
+$this->title = Yii::t('app', 'Editoriales');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="libros-index">
+<div class="editoriales-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Libros'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Editoriales'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,23 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_libro',
-            'titulo',
-            'id_autor',
-            'id_categoria',
             'id_editorial',
-            //'isbn',
-            //'anio_publicacion',
-            //'paginas',
-            //'sinopsis:ntext',
-            //'portada',
-            //'archivo_pdf',
-            //'fecha_agregado',
-            //'disponible',
+            'nombre',
+            'pais',
+            'fundacion',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Libros $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id_libro' => $model->id_libro]);
+                'urlCreator' => function ($action, Editoriales $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id_editorial' => $model->id_editorial]);
                  }
             ],
         ],

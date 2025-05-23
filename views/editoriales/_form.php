@@ -4,17 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\LibrosCategorias $model */
+/** @var app\models\Editoriales $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="libros-categorias-form">
+<div class="editoriales-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'libro_id')->textInput() ?>
+    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'categoria_id')->textInput() ?>
+    <?= $form->field($model, 'pais')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'fundacion')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

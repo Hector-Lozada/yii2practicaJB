@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Categorias;
+use app\models\Autores;
 
 /**
- * CategoriasSearch represents the model behind the search form of `app\models\Categorias`.
+ * AutoresSearch represents the model behind the search form of `app\models\Autores`.
  */
-class CategoriasSearch extends Categorias
+class AutoresSearch extends Autores
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class CategoriasSearch extends Categorias
     public function rules()
     {
         return [
-            [['id_categoria'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['id_autor'], 'integer'],
+            [['nombre', 'apellido', 'biografia', 'fecha_nacimiento', 'fecha_fallecimiento', 'nacionalidad'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CategoriasSearch extends Categorias
      */
     public function search($params, $formName = null)
     {
-        $query = Categorias::find();
+        $query = Autores::find();
 
         // add conditions that should always apply here
 
@@ -59,11 +59,15 @@ class CategoriasSearch extends Categorias
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_categoria' => $this->id_categoria,
+            'id_autor' => $this->id_autor,
+            'fecha_nacimiento' => $this->fecha_nacimiento,
+            'fecha_fallecimiento' => $this->fecha_fallecimiento,
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+            ->andFilterWhere(['like', 'apellido', $this->apellido])
+            ->andFilterWhere(['like', 'biografia', $this->biografia])
+            ->andFilterWhere(['like', 'nacionalidad', $this->nacionalidad]);
 
         return $dataProvider;
     }

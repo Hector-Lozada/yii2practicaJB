@@ -49,14 +49,14 @@ class PrestamosController extends Controller
 
     /**
      * Displays a single Prestamos model.
-     * @param int $idprestamos Idprestamos
+     * @param int $id_prestamo Id Prestamo
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($idprestamos)
+    public function actionView($id_prestamo)
     {
         return $this->render('view', [
-            'model' => $this->findModel($idprestamos),
+            'model' => $this->findModel($id_prestamo),
         ]);
     }
 
@@ -71,7 +71,7 @@ class PrestamosController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idprestamos' => $model->idprestamos]);
+                return $this->redirect(['view', 'id_prestamo' => $model->id_prestamo]);
             }
         } else {
             $model->loadDefaultValues();
@@ -85,16 +85,16 @@ class PrestamosController extends Controller
     /**
      * Updates an existing Prestamos model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idprestamos Idprestamos
+     * @param int $id_prestamo Id Prestamo
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($idprestamos)
+    public function actionUpdate($id_prestamo)
     {
-        $model = $this->findModel($idprestamos);
+        $model = $this->findModel($id_prestamo);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idprestamos' => $model->idprestamos]);
+            return $this->redirect(['view', 'id_prestamo' => $model->id_prestamo]);
         }
 
         return $this->render('update', [
@@ -105,13 +105,13 @@ class PrestamosController extends Controller
     /**
      * Deletes an existing Prestamos model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idprestamos Idprestamos
+     * @param int $id_prestamo Id Prestamo
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($idprestamos)
+    public function actionDelete($id_prestamo)
     {
-        $this->findModel($idprestamos)->delete();
+        $this->findModel($id_prestamo)->delete();
 
         return $this->redirect(['index']);
     }
@@ -119,13 +119,13 @@ class PrestamosController extends Controller
     /**
      * Finds the Prestamos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idprestamos Idprestamos
+     * @param int $id_prestamo Id Prestamo
      * @return Prestamos the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($idprestamos)
+    protected function findModel($id_prestamo)
     {
-        if (($model = Prestamos::findOne(['idprestamos' => $idprestamos])) !== null) {
+        if (($model = Prestamos::findOne(['id_prestamo' => $id_prestamo])) !== null) {
             return $model;
         }
 

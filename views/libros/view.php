@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Libros $model */
 
-$this->title = $model->idlibros;
+$this->title = $model->id_libro;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Libros'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'idlibros' => $model->idlibros], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'idlibros' => $model->idlibros], [
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id_libro' => $model->id_libro], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id_libro' => $model->id_libro], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -29,11 +29,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idlibros',
+            'id_libro',
             'titulo',
-            'autor',
-            'genero',
-            'anio',
+            'id_autor',
+            'id_categoria',
+            'id_editorial',
+            'isbn',
+            'anio_publicacion',
+            'paginas',
+            'sinopsis:ntext',
+            'portada',
+            'archivo_pdf',
+            'fecha_agregado',
+            'disponible',
         ],
     ]) ?>
 

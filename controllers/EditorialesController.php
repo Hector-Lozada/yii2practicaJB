@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Libros;
-use app\models\LibrosSearch;
+use app\models\Editoriales;
+use app\models\EditorialesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * LibrosController implements the CRUD actions for Libros model.
+ * EditorialesController implements the CRUD actions for Editoriales model.
  */
-class LibrosController extends Controller
+class EditorialesController extends Controller
 {
     /**
      * @inheritDoc
@@ -32,13 +32,13 @@ class LibrosController extends Controller
     }
 
     /**
-     * Lists all Libros models.
+     * Lists all Editoriales models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new LibrosSearch();
+        $searchModel = new EditorialesSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -48,30 +48,30 @@ class LibrosController extends Controller
     }
 
     /**
-     * Displays a single Libros model.
-     * @param int $id_libro Id Libro
+     * Displays a single Editoriales model.
+     * @param int $id_editorial Id Editorial
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id_libro)
+    public function actionView($id_editorial)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id_libro),
+            'model' => $this->findModel($id_editorial),
         ]);
     }
 
     /**
-     * Creates a new Libros model.
+     * Creates a new Editoriales model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Libros();
+        $model = new Editoriales();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_libro' => $model->id_libro]);
+                return $this->redirect(['view', 'id_editorial' => $model->id_editorial]);
             }
         } else {
             $model->loadDefaultValues();
@@ -83,18 +83,18 @@ class LibrosController extends Controller
     }
 
     /**
-     * Updates an existing Libros model.
+     * Updates an existing Editoriales model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_libro Id Libro
+     * @param int $id_editorial Id Editorial
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id_libro)
+    public function actionUpdate($id_editorial)
     {
-        $model = $this->findModel($id_libro);
+        $model = $this->findModel($id_editorial);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_libro' => $model->id_libro]);
+            return $this->redirect(['view', 'id_editorial' => $model->id_editorial]);
         }
 
         return $this->render('update', [
@@ -103,29 +103,29 @@ class LibrosController extends Controller
     }
 
     /**
-     * Deletes an existing Libros model.
+     * Deletes an existing Editoriales model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id_libro Id Libro
+     * @param int $id_editorial Id Editorial
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id_libro)
+    public function actionDelete($id_editorial)
     {
-        $this->findModel($id_libro)->delete();
+        $this->findModel($id_editorial)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Libros model based on its primary key value.
+     * Finds the Editoriales model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id_libro Id Libro
-     * @return Libros the loaded model
+     * @param int $id_editorial Id Editorial
+     * @return Editoriales the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id_libro)
+    protected function findModel($id_editorial)
     {
-        if (($model = Libros::findOne(['id_libro' => $id_libro])) !== null) {
+        if (($model = Editoriales::findOne(['id_editorial' => $id_editorial])) !== null) {
             return $model;
         }
 

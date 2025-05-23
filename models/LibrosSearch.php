@@ -17,8 +17,8 @@ class LibrosSearch extends Libros
     public function rules()
     {
         return [
-            [['idlibros', 'anio'], 'integer'],
-            [['titulo', 'autor', 'genero'], 'safe'],
+            [['id_libro', 'id_autor', 'id_categoria', 'id_editorial', 'paginas', 'disponible'], 'integer'],
+            [['titulo', 'isbn', 'anio_publicacion', 'sinopsis', 'portada', 'archivo_pdf', 'fecha_agregado'], 'safe'],
         ];
     }
 
@@ -59,13 +59,21 @@ class LibrosSearch extends Libros
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idlibros' => $this->idlibros,
-            'anio' => $this->anio,
+            'id_libro' => $this->id_libro,
+            'id_autor' => $this->id_autor,
+            'id_categoria' => $this->id_categoria,
+            'id_editorial' => $this->id_editorial,
+            'anio_publicacion' => $this->anio_publicacion,
+            'paginas' => $this->paginas,
+            'fecha_agregado' => $this->fecha_agregado,
+            'disponible' => $this->disponible,
         ]);
 
         $query->andFilterWhere(['like', 'titulo', $this->titulo])
-            ->andFilterWhere(['like', 'autor', $this->autor])
-            ->andFilterWhere(['like', 'genero', $this->genero]);
+            ->andFilterWhere(['like', 'isbn', $this->isbn])
+            ->andFilterWhere(['like', 'sinopsis', $this->sinopsis])
+            ->andFilterWhere(['like', 'portada', $this->portada])
+            ->andFilterWhere(['like', 'archivo_pdf', $this->archivo_pdf]);
 
         return $dataProvider;
     }

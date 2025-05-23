@@ -36,17 +36,33 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+    
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav me-auto'],
+        'items' => [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            [
+                'label' => 'Biblioteca Virtual',
+                'items' => [
+                    ['label' => 'Usuarios', 'url' => ['/usuarios/index']],
+                    ['label' => 'Libros', 'url' => ['/libros/index']],
+                    ['label' => 'Categorías', 'url' => ['/categorias/index']],
+                    ['label' => 'Préstamos', 'url' => ['/prestamos/index']],
+                    ['label' => 'Editoriales', 'url' => ['/editoriales/index']],
+                    ['label' => 'Autores', 'url' => ['/autores/index']],
+                    '<div class="dropdown-divider"></div>',
+                    ['label' => 'Todos los módulos', 'url' => '#'],
+                ],
+                'dropdownOptions' => [
+                    'class' => 'dropdown-menu-dark' // Opcional: estilo oscuro para el dropdown
+                ]
+            ],
+        ]
+    ]);
+    
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Usuarios', 'url' => ['/usuarios/index']],
-            ['label' => 'Libros', 'url' => ['/libros/index']],
-            ['label' => 'Categoria', 'url' => ['/categorias/index']],
-            ['label' => 'Lib-Cat', 'url' => ['/libros-categorias/index']],
-            ['label' => 'Prestamos', 'url' => ['/prestamos/index']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
@@ -59,6 +75,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     . '</li>'
         ]
     ]);
+    
     NavBar::end();
     ?>
 </header>

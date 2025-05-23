@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\PrestamosSearch $model */
+/** @var app\models\AutoresSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="prestamos-search">
+<div class="autores-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,19 +18,19 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id_prestamo') ?>
+    <?= $form->field($model, 'id_autor') ?>
 
-    <?= $form->field($model, 'id_usuario') ?>
+    <?= $form->field($model, 'nombre') ?>
 
-    <?= $form->field($model, 'id_libro') ?>
+    <?= $form->field($model, 'apellido') ?>
 
-    <?= $form->field($model, 'fecha_prestamo') ?>
+    <?= $form->field($model, 'biografia') ?>
 
-    <?= $form->field($model, 'fecha_devolucion_esperada') ?>
+    <?= $form->field($model, 'fecha_nacimiento') ?>
 
-    <?php // echo $form->field($model, 'fecha_devolucion_real') ?>
+    <?php // echo $form->field($model, 'fecha_fallecimiento') ?>
 
-    <?php // echo $form->field($model, 'estado') ?>
+    <?php // echo $form->field($model, 'nacionalidad') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

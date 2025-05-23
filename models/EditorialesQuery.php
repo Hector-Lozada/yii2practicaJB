@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[LibrosCategorias]].
+ * This is the ActiveQuery class for [[Editoriales]].
  *
- * @see LibrosCategorias
+ * @see Editoriales
  */
-class LibrosCategoriasQuery extends \yii\db\ActiveQuery
+class EditorialesQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class LibrosCategoriasQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return LibrosCategorias[]|array
+     * @return Editoriales[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class LibrosCategoriasQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return LibrosCategorias|array|null
+     * @return Editoriales|array|null
      */
     public function one($db = null)
     {

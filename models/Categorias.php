@@ -7,10 +7,11 @@ use Yii;
 /**
  * This is the model class for table "categorias".
  *
- * @property int $idcategorias
- * @property string|null $nombre
+ * @property int $id_categoria
+ * @property string $nombre
+ * @property string|null $descripcion
  *
- * @property LibrosCategorias[] $librosCategorias
+ * @property Libros[] $libros
  */
 class Categorias extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,9 @@ class Categorias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'default', 'value' => null],
+            [['descripcion'], 'default', 'value' => null],
+            [['nombre'], 'required'],
+            [['descripcion'], 'string'],
             [['nombre'], 'string', 'max' => 100],
         ];
     }
@@ -41,19 +44,20 @@ class Categorias extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idcategorias' => Yii::t('app', 'Idcategorias'),
+            'id_categoria' => Yii::t('app', 'Id Categoria'),
             'nombre' => Yii::t('app', 'Nombre'),
+            'descripcion' => Yii::t('app', 'Descripcion'),
         ];
     }
 
     /**
-     * Gets query for [[LibrosCategorias]].
+     * Gets query for [[Libros]].
      *
-     * @return \yii\db\ActiveQuery|LibrosCategoriasQuery
+     * @return \yii\db\ActiveQuery|LibrosQuery
      */
-    public function getLibrosCategorias()
+    public function getLibros()
     {
-        return $this->hasMany(LibrosCategorias::class, ['categoria_id' => 'idcategorias']);
+        return $this->hasMany(Libros::class, ['id_categoria' => 'id_categoria']);
     }
 
     /**

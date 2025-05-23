@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=192.168.56.2;dbname=BibliotecaVirtual',
+    'dsn' => 'mysql:host=192.168.56.2;dbname=biblioteca_virtual',
     'username' => 'remote_estu_bjosselyn',
     'password' => '1234567890',
     'charset' => 'utf8',

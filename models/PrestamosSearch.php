@@ -17,8 +17,8 @@ class PrestamosSearch extends Prestamos
     public function rules()
     {
         return [
-            [['idprestamos', 'usuario_id', 'libro_id'], 'integer'],
-            [['fecha_prestamo', 'fecha_devolucion'], 'safe'],
+            [['id_prestamo', 'id_usuario', 'id_libro'], 'integer'],
+            [['fecha_prestamo', 'fecha_devolucion_esperada', 'fecha_devolucion_real', 'estado'], 'safe'],
         ];
     }
 
@@ -59,12 +59,15 @@ class PrestamosSearch extends Prestamos
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idprestamos' => $this->idprestamos,
-            'usuario_id' => $this->usuario_id,
-            'libro_id' => $this->libro_id,
+            'id_prestamo' => $this->id_prestamo,
+            'id_usuario' => $this->id_usuario,
+            'id_libro' => $this->id_libro,
             'fecha_prestamo' => $this->fecha_prestamo,
-            'fecha_devolucion' => $this->fecha_devolucion,
+            'fecha_devolucion_esperada' => $this->fecha_devolucion_esperada,
+            'fecha_devolucion_real' => $this->fecha_devolucion_real,
         ]);
+
+        $query->andFilterWhere(['like', 'estado', $this->estado]);
 
         return $dataProvider;
     }

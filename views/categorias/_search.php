@@ -18,9 +18,11 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'idcategorias') ?>
+    <?= $form->field($model, 'id_categoria') ?>
 
     <?= $form->field($model, 'nombre') ?>
+
+    <?= $form->field($model, 'descripcion') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

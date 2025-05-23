@@ -12,13 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'usuario_id')->textInput() ?>
+    <?= $form->field($model, 'id_usuario')->textInput() ?>
 
-    <?= $form->field($model, 'libro_id')->textInput() ?>
+    <?= $form->field($model, 'id_libro')->textInput() ?>
 
     <?= $form->field($model, 'fecha_prestamo')->textInput() ?>
 
-    <?= $form->field($model, 'fecha_devolucion')->textInput() ?>
+    <?= $form->field($model, 'fecha_devolucion_esperada')->textInput() ?>
+
+    <?= $form->field($model, 'fecha_devolucion_real')->textInput() ?>
+
+    <?= $form->field($model, 'estado')->dropDownList([ 'activo' => 'Activo', 'completado' => 'Completado', 'atrasado' => 'Atrasado', ], ['prompt' => '']) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
