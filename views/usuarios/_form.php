@@ -66,7 +66,7 @@ use yii\widgets\ActiveForm;
                 <div class="form-group">
                     <label class="control-label">Imagen Actual</label>
                     <div>
-                        <?= Html::img(Yii::getAlias('@web') . '/uploads/images/' . $model->imagen_perfil, [
+                       <?= Html::img(Yii::getAlias('@web/uploads/images/') . $model->imagen_perfil, [
     'alt' => 'Imagen del usuario',
     'class' => 'img-thumbnail',
     'style' => 'max-width: 150px; max-height: 150px;'

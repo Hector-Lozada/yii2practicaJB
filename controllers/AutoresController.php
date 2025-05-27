@@ -7,6 +7,7 @@ use app\models\AutoresSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * AutoresController implements the CRUD actions for Autores model.
@@ -17,19 +18,23 @@ class AutoresController extends Controller
      * @inheritDoc
      */
     public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+{
+    return [
+        'access' => [
+            'class' => \yii\filters\AccessControl::class,
+            'only' => ['index', 'view', 'create', 'update', 'delete'], // todas las acciones
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'], // autenticado
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isAdmin();
+                    }
                 ],
-            ]
-        );
-    }
+            ],
+        ],
+    ];
+}
 
     /**
      * Lists all Autores models.

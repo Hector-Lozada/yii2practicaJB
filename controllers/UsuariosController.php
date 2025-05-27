@@ -13,16 +13,23 @@ use yii\filters\VerbFilter;
 class UsuariosController extends Controller
 {
     public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['POST'],
+{
+    return [
+        'access' => [
+            'class' => \yii\filters\AccessControl::class,
+            'only' => ['index', 'view', 'create', 'update', 'delete'], // todas las acciones
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'], // autenticado
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isAdmin();
+                    }
                 ],
             ],
-        ];
-    }
+        ],
+    ];
+}
 
     /**
      * Lista todos los usuarios.

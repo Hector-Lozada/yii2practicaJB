@@ -7,6 +7,7 @@ use app\models\PrestamosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * PrestamosController implements the CRUD actions for Prestamos model.
@@ -17,19 +18,33 @@ class PrestamosController extends Controller
      * @inheritDoc
      */
     public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+{
+    return [
+        'access' => [
+            'class' => \yii\filters\AccessControl::class,
+            'only' => ['index', 'view', 'create', 'update', 'delete'],
+            'rules' => [
+                // admin: todo
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isAdmin();
+                    }
                 ],
-            ]
-        );
-    }
+                // usuario: solo ver
+                [
+                    'allow' => true,
+                    'actions' => ['index', 'view'],
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isUsuario();
+                    }
+                ],
+            ],
+        ],
+    ];
+}
 
     /**
      * Lists all Prestamos models.

@@ -12,17 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true, 'required' => true]) ?>
 
-    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true, 'required' => true]) ?>
 
-    <?= $form->field($model, 'biografia')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'biografia')->textarea(['rows' => 6, 'required' => true]) ?>
 
-    <?= $form->field($model, 'fecha_nacimiento')->textInput() ?>
+    <?= $form->field($model, 'fecha_nacimiento')->input('date', ['required' => true]) ?>
 
-    <?= $form->field($model, 'fecha_fallecimiento')->textInput() ?>
+    <?= $form->field($model, 'fecha_fallecimiento')->input('date', ['required' => true]) ?>
 
-    <?= $form->field($model, 'nacionalidad')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nacionalidad')->textInput(['maxlength' => true, 'required' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -31,3 +31,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+

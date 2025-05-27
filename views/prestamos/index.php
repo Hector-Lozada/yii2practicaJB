@@ -31,12 +31,32 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id_prestamo',
-            'id_usuario',
-            'id_libro',
+            [
+                'attribute' => 'id_usuario',
+                'label' => 'Usuario',
+                'value' => function($model) {
+                    // Ajusta 'usuario' y 'nombre' según tu relación y campo real
+                    return $model->usuario ? $model->usuario->nombre : '(no asignado)';
+                },
+                'filter' => \yii\helpers\ArrayHelper::map(
+                    \app\models\Usuarios::find()->all(), 'id_usuario', 'nombre'
+                ),
+            ],
+            [
+                'attribute' => 'id_libro',
+                'label' => 'Libro',
+                'value' => function($model) {
+                    // Ajusta 'libro' y 'titulo' según tu relación y campo real
+                    return $model->libro ? $model->libro->titulo : '(no asignado)';
+                },
+                'filter' => \yii\helpers\ArrayHelper::map(
+                    \app\models\Libros::find()->all(), 'id_libro', 'titulo'
+                ),
+            ],
             'fecha_prestamo',
             'fecha_devolucion_esperada',
-            //'fecha_devolucion_real',
-            //'estado',
+            // 'fecha_devolucion_real',
+            // 'estado',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Prestamos $model, $key, $index, $column) {

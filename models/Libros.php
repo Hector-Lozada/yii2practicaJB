@@ -3,32 +3,22 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "libros".
- *
- * @property int $id_libro
- * @property string $titulo
- * @property int $id_autor
- * @property int $id_categoria
- * @property int|null $id_editorial
- * @property string|null $isbn
- * @property string|null $anio_publicacion
- * @property int|null $paginas
- * @property string|null $sinopsis
- * @property string|null $portada Ruta de la imagen de portada
- * @property string|null $archivo_pdf Ruta del archivo PDF del libro
- * @property string|null $fecha_agregado
- * @property int|null $disponible
- *
- * @property Autores $autor
- * @property Categorias $categoria
- * @property Editoriales $editorial
- * @property Prestamos[] $prestamos
  */
 class Libros extends \yii\db\ActiveRecord
 {
-
+    /**
+     * @var UploadedFile
+     */
+    public $portadaFile;
+    
+    /**
+     * @var UploadedFile
+     */
+    public $pdfFile;
 
     /**
      * {@inheritdoc}
@@ -44,8 +34,6 @@ class Libros extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_editorial', 'isbn', 'anio_publicacion', 'paginas', 'sinopsis', 'portada', 'archivo_pdf'], 'default', 'value' => null],
-            [['disponible'], 'default', 'value' => 1],
             [['titulo', 'id_autor', 'id_categoria'], 'required'],
             [['id_autor', 'id_categoria', 'id_editorial', 'paginas', 'disponible'], 'integer'],
             [['anio_publicacion', 'fecha_agregado'], 'safe'],
@@ -53,6 +41,8 @@ class Libros extends \yii\db\ActiveRecord
             [['titulo', 'portada', 'archivo_pdf'], 'string', 'max' => 255],
             [['isbn'], 'string', 'max' => 20],
             [['isbn'], 'unique'],
+            [['portadaFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif', 'maxSize' => 5*1024*1024],
+            [['pdfFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf', 'maxSize' => 20*1024*1024],
             [['id_autor'], 'exist', 'skipOnError' => true, 'targetClass' => Autores::class, 'targetAttribute' => ['id_autor' => 'id_autor']],
             [['id_categoria'], 'exist', 'skipOnError' => true, 'targetClass' => Categorias::class, 'targetAttribute' => ['id_categoria' => 'id_categoria']],
             [['id_editorial'], 'exist', 'skipOnError' => true, 'targetClass' => Editoriales::class, 'targetAttribute' => ['id_editorial' => 'id_editorial']],
@@ -65,69 +55,53 @@ class Libros extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_libro' => Yii::t('app', 'Id Libro'),
-            'titulo' => Yii::t('app', 'Titulo'),
-            'id_autor' => Yii::t('app', 'Id Autor'),
-            'id_categoria' => Yii::t('app', 'Id Categoria'),
-            'id_editorial' => Yii::t('app', 'Id Editorial'),
-            'isbn' => Yii::t('app', 'Isbn'),
-            'anio_publicacion' => Yii::t('app', 'Anio Publicacion'),
-            'paginas' => Yii::t('app', 'Paginas'),
-            'sinopsis' => Yii::t('app', 'Sinopsis'),
-            'portada' => Yii::t('app', 'Portada'),
-            'archivo_pdf' => Yii::t('app', 'Archivo Pdf'),
-            'fecha_agregado' => Yii::t('app', 'Fecha Agregado'),
-            'disponible' => Yii::t('app', 'Disponible'),
+            'id_libro' => 'ID Libro',
+            'titulo' => 'Título',
+            'id_autor' => 'Autor',
+            'id_categoria' => 'Categoría',
+            'id_editorial' => 'Editorial',
+            'isbn' => 'ISBN',
+            'anio_publicacion' => 'Año de Publicación',
+            'paginas' => 'Páginas',
+            'sinopsis' => 'Sinopsis',
+            'portada' => 'Portada',
+            'portadaFile' => 'Imagen de Portada',
+            'archivo_pdf' => 'Archivo PDF',
+            'pdfFile' => 'Libro en PDF',
+            'fecha_agregado' => 'Fecha de Agregado',
+            'disponible' => 'Disponible',
         ];
     }
 
     /**
-     * Gets query for [[Autor]].
-     *
-     * @return \yii\db\ActiveQuery|AutoresQuery
+     * Upload files and save model
      */
-    public function getAutor()
+    public function uploadAndSave()
     {
-        return $this->hasOne(Autores::class, ['id_autor' => 'id_autor']);
+        if ($this->validate()) {
+            // Procesar portada
+            if ($this->portadaFile) {
+                $portadaName = 'portada_' . time() . '.' . $this->portadaFile->extension;
+                $this->portadaFile->saveAs('uploads/portadas/' . $portadaName);
+                $this->portada = $portadaName;
+            }
+            
+            // Procesar PDF
+            if ($this->pdfFile) {
+                $pdfName = 'libro_' . time() . '.' . $this->pdfFile->extension;
+                $this->pdfFile->saveAs('uploads/pdfs/' . $pdfName);
+                $this->archivo_pdf = $pdfName;
+            }
+            
+            // Set fecha_agregado if new record
+            if ($this->isNewRecord) {
+                $this->fecha_agregado = date('Y-m-d H:i:s');
+            }
+            
+            return $this->save(false); // false para evitar validación doble
+        }
+        return false;
     }
 
-    /**
-     * Gets query for [[Categoria]].
-     *
-     * @return \yii\db\ActiveQuery|CategoriasQuery
-     */
-    public function getCategoria()
-    {
-        return $this->hasOne(Categorias::class, ['id_categoria' => 'id_categoria']);
-    }
-
-    /**
-     * Gets query for [[Editorial]].
-     *
-     * @return \yii\db\ActiveQuery|EditorialesQuery
-     */
-    public function getEditorial()
-    {
-        return $this->hasOne(Editoriales::class, ['id_editorial' => 'id_editorial']);
-    }
-
-    /**
-     * Gets query for [[Prestamos]].
-     *
-     * @return \yii\db\ActiveQuery|PrestamosQuery
-     */
-    public function getPrestamos()
-    {
-        return $this->hasMany(Prestamos::class, ['id_libro' => 'id_libro']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return LibrosQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new LibrosQuery(get_called_class());
-    }
-
+    // ... (mantén las relaciones existentes)
 }

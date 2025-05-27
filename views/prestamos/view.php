@@ -27,16 +27,42 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id_prestamo',
-            'id_usuario',
-            'id_libro',
-            'fecha_prestamo',
-            'fecha_devolucion_esperada',
-            'fecha_devolucion_real',
-            'estado',
+    'model' => $model,
+    'attributes' => [
+        'id_prestamo',
+        [
+            'label' => 'Usuario',
+            'value' => function ($model) {
+                return $model->usuario->nombre ?? '(no disponible)';
+            },
         ],
-    ]) ?>
+        [
+            'label' => 'Libro',
+            'value' => function ($model) {
+                return $model->libro->titulo ?? '(no disponible)';
+            },
+        ],
+        [
+            'attribute' => 'fecha_prestamo',
+            'value' => function ($model) {
+                return Yii::$app->formatter->asDate($model->fecha_prestamo);
+            },
+        ],
+        [
+            'attribute' => 'fecha_devolucion_esperada',
+            'value' => function ($model) {
+                return Yii::$app->formatter->asDate($model->fecha_devolucion_esperada);
+            },
+        ],
+        [
+            'attribute' => 'fecha_devolucion_real',
+            'value' => function ($model) {
+                return Yii::$app->formatter->asDate($model->fecha_devolucion_real);
+            },
+        ],
+        'estado',
+    ],
+]) ?>
+
 
 </div>

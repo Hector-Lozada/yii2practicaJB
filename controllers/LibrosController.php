@@ -7,6 +7,8 @@ use app\models\LibrosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
+use yii\web\UploadedFile;
 
 /**
  * LibrosController implements the CRUD actions for Libros model.
@@ -17,19 +19,33 @@ class LibrosController extends Controller
      * @inheritDoc
      */
     public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+{
+    return [
+        'access' => [
+            'class' => \yii\filters\AccessControl::class,
+            'only' => ['index', 'view', 'create', 'update', 'delete'],
+            'rules' => [
+                // admin: todo
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isAdmin();
+                    }
                 ],
-            ]
-        );
-    }
+                // usuario: solo ver
+                [
+                    'allow' => true,
+                    'actions' => ['index', 'view'],
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return Yii::$app->user->identity && Yii::$app->user->identity->isUsuario();
+                    }
+                ],
+            ],
+        ],
+    ];
+}
 
     /**
      * Lists all Libros models.
@@ -65,12 +81,16 @@ class LibrosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+   public function actionCreate()
     {
         $model = new Libros();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            $model->load($this->request->post());
+            $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
+            $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+            
+            if ($model->uploadAndSave()) {
                 return $this->redirect(['view', 'id_libro' => $model->id_libro]);
             }
         } else {
@@ -84,17 +104,19 @@ class LibrosController extends Controller
 
     /**
      * Updates an existing Libros model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id_libro Id Libro
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id_libro)
     {
         $model = $this->findModel($id_libro);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_libro' => $model->id_libro]);
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            $model->portadaFile = UploadedFile::getInstance($model, 'portadaFile');
+            $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+            
+            if ($model->uploadAndSave()) {
+                return $this->redirect(['view', 'id_libro' => $model->id_libro]);
+            }
         }
 
         return $this->render('update', [
